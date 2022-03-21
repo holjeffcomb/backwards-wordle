@@ -1,17 +1,40 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import { words } from "../words";
 
 let checkIfWord = require("check-if-word");
 let word = checkIfWord("en");
 
+const GameGridStyle = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  border: 1px solid black;
+  width: 400px;
+  height: 400px;
+  min-width: 200px;
+  min-height: 200px;
+  margin: auto;
+`;
+
+const SquareStyle = styled.div`
+  display: block;
+  width: 90%;
+  height: 90%;
+  border: 1px solid black;
+  margin: auto;
+`;
+
 const Game = () => {
   const [wordle, setWordle] = useState();
   const [guess, setGuess] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [attempts, setAttempts] = useState([]);
 
   // page load
   useEffect(() => {
     setWordle(words[Math.floor(Math.random() * words.length)]);
     word.check("warmup");
+    setIsLoading(false);
   }, []);
 
   // when guess is updated
@@ -56,6 +79,37 @@ const Game = () => {
   return (
     <div className="App">
       <h1 className="App">{wordle}</h1>
+
+      {/*
+        5 x 5 grid
+      */}
+      <GameGridStyle>
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+        <SquareStyle />
+      </GameGridStyle>
 
       <div className="main-container"></div>
 
