@@ -9,8 +9,8 @@ const SquareStyle = styled.div`
   margin: auto;
 `;
 
-const Square = () => {
-  return <SquareStyle />;
+const Square = (props) => {
+  return <SquareStyle>{props.letter}</SquareStyle>;
 };
 
 export default Square;
