@@ -5,6 +5,9 @@ import Square from "./Square";
 
 let checkIfWord = require("check-if-word");
 let word = checkIfWord("en");
+let numGuesses = 0;
+let attempts = [];
+let squareArr = [];
 
 const GameGridStyle = styled.div`
   display: grid;
@@ -21,8 +24,7 @@ const Game = () => {
   const [wordle, setWordle] = useState();
   const [guess, setGuess] = useState();
   const [isLoading, setIsLoading] = useState(true);
-
-  let attempts = [];
+  const [inputValue, setInputValue] = useState("");
 
   // page load
   useEffect(() => {
@@ -51,8 +53,19 @@ const Game = () => {
     // 1. validate word exists
     if (word.check(guess)) {
       if (guess.length === 5) {
+        // construct square array
+        squareArr[numGuesses] = [
+          <Square letter={guess.charAt(0)} key={0 + attempts.length * 5} />,
+          <Square letter={guess.charAt(1)} key={1 + attempts.length * 5} />,
+          <Square letter={guess.charAt(2)} key={2 + attempts.length * 5} />,
+          <Square letter={guess.charAt(3)} key={3 + attempts.length * 5} />,
+          <Square letter={guess.charAt(4)} key={4 + attempts.length * 5} />,
+        ];
+
         // push to attempt array
         attempts.push(guess);
+
+        numGuesses++;
 
         // 2. iterate through each letter and determine matches
         let result = [];
@@ -85,7 +98,12 @@ const Game = () => {
   // submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
-    setGuess(event.target[0].value);
+    setGuess(inputValue);
+    setInputValue("");
+  };
+
+  const handleUserInput = (event) => {
+    setInputValue(event.target.value);
   };
 
   return (
@@ -104,7 +122,12 @@ const Game = () => {
       <div className="main-container"></div>
 
       <form onSubmit={handleSubmit}>
-        <input type="text" name="guess"></input>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleUserInput}
+          name="guess"
+        ></input>
         <button type="submit">Check</button>
       </form>
     </div>
