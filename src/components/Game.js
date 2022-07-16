@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { words } from "../words";
 import Square from "./Square";
 
+import Keyboard from "react-simple-keyboard";
+import "../keyboard.css";
+
 let checkIfWord = require("check-if-word");
 let word = checkIfWord("en");
 let numGuesses = 0;
@@ -34,19 +37,7 @@ const Game = () => {
   }, []);
 
   // when guess is updated
-  useEffect(() => {
-    if (guess) {
-      checkWord(guess);
-      console.log(attempts);
-      renderSquares();
-    }
-  }, [guess]);
-
-  const renderSquares = () => {
-    for (const attempt in attempts) {
-      // add attempt array to square objects
-    }
-  };
+  useEffect(() => {}, [guess]);
 
   // logic to check guess against the wordle
   const checkWord = (guess) => {
@@ -61,6 +52,18 @@ const Game = () => {
           <Square letter={guess.charAt(3)} key={3 + attempts.length * 5} />,
           <Square letter={guess.charAt(4)} key={4 + attempts.length * 5} />,
         ];
+
+        for (let i = numGuesses + 1; i < 6; i++) {
+          squareArr[i] = [
+            <Square />,
+            <Square />,
+            <Square />,
+            <Square />,
+            <Square />,
+          ];
+        }
+
+        console.log(squareArr);
 
         // push to attempt array
         attempts.push(guess);
@@ -98,12 +101,22 @@ const Game = () => {
   // submit handler
   const handleSubmit = (event) => {
     event.preventDefault();
+    checkWord(inputValue);
     setGuess(inputValue);
     setInputValue("");
   };
 
   const handleUserInput = (event) => {
     setInputValue(event.target.value);
+  };
+
+  const onChange = (input) => {
+    setGuess(input);
+    console.log("Input changed", input);
+  };
+
+  const onKeyPress = (button) => {
+    console.log("Button pressed", button);
   };
 
   return (
@@ -113,23 +126,23 @@ const Game = () => {
       {/*
         5 x 5 grid
       */}
-      <GameGridStyle>
-        {Array.from(Array(30)).map((x, index) => (
-          <Square key={index} letter={"a"} />
-        ))}
-      </GameGridStyle>
+      <GameGridStyle>{squareArr}</GameGridStyle>
 
       <div className="main-container"></div>
 
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={inputValue}
+          value={guess}
           onChange={handleUserInput}
           name="guess"
         ></input>
         <button type="submit">Check</button>
       </form>
+      <Keyboard
+        onChange={(input) => onChange(input)}
+        onKeyPress={(button) => onKeyPress(button)}
+      />
     </div>
   );
 };
