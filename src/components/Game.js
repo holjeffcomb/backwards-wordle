@@ -8,6 +8,7 @@ import "../keyboard.css";
 
 let checkIfWord = require("check-if-word");
 let word = checkIfWord("en");
+
 let numGuesses = 0;
 let attempts = [];
 let squareArr = [];
@@ -37,7 +38,7 @@ const Game = () => {
   }, []);
 
   // when guess is updated
-  useEffect(() => {}, [guess]);
+  // useEffect(() => {}, [guess]);
 
   // logic to check guess against the wordle
   const checkWord = (guess) => {
@@ -52,14 +53,13 @@ const Game = () => {
           <Square letter={guess.charAt(3)} key={3 + attempts.length * 5} />,
           <Square letter={guess.charAt(4)} key={4 + attempts.length * 5} />,
         ];
-
         for (let i = numGuesses + 1; i < 6; i++) {
           squareArr[i] = [
-            <Square />,
-            <Square />,
-            <Square />,
-            <Square />,
-            <Square />,
+            <Square key={0 + i * 5} />,
+            <Square key={1 + i * 5} />,
+            <Square key={2 + i * 5} />,
+            <Square key={3 + i * 5} />,
+            <Square key={4 + i * 5} />,
           ];
         }
 
